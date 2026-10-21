@@ -272,7 +272,7 @@ export async function POST(request: Request) {
     }
 
     // Only the credentials are secret, so only these come from .env
-    const smtpUser = process.env.SMTP_USER;
+    const smtpUser = 'matobanda29@gmail.com';
     const smtpPass = process.env.SMTP_PASS;
 
     if (!smtpUser || !smtpPass) {

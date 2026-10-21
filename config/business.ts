@@ -4,7 +4,7 @@ export const business = {
   phone: '+27 67 069 4315',
   secondaryPhone: '+27 65 211 7051',
   whatsapp: '+27 67 069 4315',
-  email: 'mato.banda573@gmail.com',
+  email: 'matobanda573@gmail.com',
   secondaryEmail: 'matobanda29@gmail.com',
   address: 'Cape Town, South Africa',
   serviceArea: 'Parklands, Sea Point, Woodstock, Table View & Blouberg',
