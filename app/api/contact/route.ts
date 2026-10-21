@@ -4,6 +4,12 @@ import { business } from '@/config/business';
 
 export const runtime = 'nodejs';
 
+/* ---------- Mail settings (not secret, so they live in code) ---------- */
+const SMTP_HOST = 'smtp.gmail.com';
+const SMTP_PORT = 587;
+const SMTP_SECURE = false; // false = STARTTLS on port 587
+const CONTACT_TO_EMAIL = business.email; // where enquiries are delivered
+
 /* ---------- Brand palette (inline styles only: email clients ignore CSS vars) ---------- */
 const c = {
   navy: '#102a43',
@@ -265,13 +271,11 @@ export async function POST(request: Request) {
       );
     }
 
-    if (
-      !process.env.SMTP_HOST ||
-      !process.env.SMTP_USER ||
-      !process.env.SMTP_PASS ||
-      !process.env.CONTACT_TO_EMAIL ||
-      !process.env.CONTACT_FROM_EMAIL
-    ) {
+    // Only the credentials are secret, so only these come from .env
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+
+    if (!smtpUser || !smtpPass) {
       return NextResponse.json(
         {
           error:
@@ -282,20 +286,17 @@ export async function POST(request: Request) {
     }
 
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_SECURE,
+      auth: { user: smtpUser, pass: smtpPass },
     });
 
     const data = { name, email, phone, service, area, contactMethod, details };
 
     await transporter.sendMail({
-      from: `"${oneLine(business.name).replace(/"/g, '')} Website" <${process.env.CONTACT_FROM_EMAIL}>`,
-      to: process.env.CONTACT_TO_EMAIL,
+      from: `"${oneLine(business.name).replace(/"/g, '')} Website" <${smtpUser}>`,
+      to: CONTACT_TO_EMAIL,
       replyTo: email,
       subject: oneLine(`New ${service} enquiry from ${name}`),
       text: buildEmailText(data),
