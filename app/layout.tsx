@@ -17,9 +17,13 @@ export const metadata: Metadata = {
     index: !business.name.includes('['),
     follow: true,
   },
-  icons: {
-    icon: '/icon.svg',
-  },
+ icons: {
+  icon: [
+    { url: '/icon.svg', type: 'image/svg+xml' },
+    { url: '/favicon.ico', sizes: 'any' },
+  ],
+  apple: '/apple-icon.png',
+},
 }
 
 export const viewport: Viewport = {

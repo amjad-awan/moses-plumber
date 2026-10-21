@@ -1,28 +1,25 @@
-'use client'
-
-import { ArrowRight, Menu, Phone, X } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
-import { business, navLinks, services } from '@/config/business'
+import { business } from '@/config/business'
 
 export function BrandLogo({ className = '' }: { className?: string }) {
+  // "Moses Gas, Plumbing & Electrical" -> "Moses" + "Gas, Plumbing & Electrical"
+  const [first, ...rest] = business.name.split(' ')
+  const tagline = rest.join(' ')
+
   return (
     <Link
       href="/"
       className={`brand ${className}`.trim()}
       aria-label={`${business.name} home`}
     >
-      <Image
-        src="/logo2.png"
-        alt=""
-        width={40}
-        height={40}
-        className="brand-logo"
-        priority
-      />
-      {/* <span>{business.name}</span> */}
+      <span className="brand-badge" aria-hidden="true">
+        {first.charAt(0)}
+      </span>
+
+      <span className="brand-text">
+        <span className="brand-name">{first}</span>
+        {tagline && <span className="brand-tagline">{tagline}</span>}
+      </span>
     </Link>
   )
 }

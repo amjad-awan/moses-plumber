@@ -372,4 +372,143 @@
     transform: none;
   }
 }
- 
+
+/* ---------- Brand wordmark (for dark navy backgrounds) ---------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: var(--background);
+}
+
+/* Monogram badge: bright blue so it stands out on navy */
+.brand-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+  border-radius: 0.7rem;
+  background: linear-gradient(140deg, var(--bright) 0%, var(--blue) 100%);
+  color: var(--background);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 6px 16px rgba(22, 135, 232, 0.35);
+  transition: transform 0.25s ease;
+}
+
+/* orange accent dot; border matches the navy background */
+.brand-badge::after {
+  content: '';
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+/* Text lockup */
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--background);
+}
+
+.brand-tagline {
+  position: relative;
+  padding-top: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--line);
+}
+
+/* thin orange rule between name and tagline */
+.brand-tagline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--orange);
+}
+
+/* Hover */
+.brand:hover .brand-badge {
+  transform: rotate(-4deg) scale(1.05);
+}
+
+.brand:hover .brand-tagline {
+  color: var(--background);
+}
+
+.brand:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+}
+
+/* Smaller screens */
+@media (max-width: 480px) {
+  .brand-badge {
+    width: 2.3rem;
+    height: 2.3rem;
+    font-size: 1.3rem;
+  }
+
+  .brand-name {
+    font-size: 1.3rem;
+  }
+
+  .brand-tagline {
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-badge {
+    transition: none;
+  }
+
+  .brand:hover .brand-badge {
+    transform: none;
+  }
+}
+
+/* Optional: use on white / pale backgrounds -> <BrandLogo className="brand-on-light" /> */
+.brand-on-light,
+.brand-on-light .brand-name {
+  color: var(--navy);
+}
+
+.brand-on-light .brand-tagline,
+.brand-on-light:hover .brand-tagline {
+  color: var(--blue);
+}
+
+.brand-on-light .brand-badge::after {
+  border-color: var(--background);
+}

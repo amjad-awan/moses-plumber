@@ -15,6 +15,10 @@ export function ContactForm({
   >('idle');
 
   const [message, setMessage] = useState('');
+  const [hover, setHover] = useState(false)
+const [pressed, setPressed] = useState(false)
+
+const loading = status === 'loading'
 
   const [form, setForm] = useState({
     name: '',
@@ -190,18 +194,61 @@ export function ContactForm({
       </label>
 
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <button
-          className="button button-primary"
-          disabled={status === 'loading'}
-          type="submit"
-        >
-          {status === 'loading' ? (
-            <Loader2 className="animate-spin" size={18} />
-          ) : (
-            <ArrowUpRight size={18} />
-          )}
-          {status === 'loading' ? 'Sending...' : 'Request a quote'}
-        </button>
+       <button
+  type="submit"
+  disabled={loading}
+  onMouseEnter={() => setHover(true)}
+  onMouseLeave={() => {
+    setHover(false)
+    setPressed(false)
+  }}
+  onMouseDown={() => setPressed(true)}
+  onMouseUp={() => setPressed(false)}
+  style={{
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '0.6rem',
+    width: '100%',
+    padding: '0.95rem 1.75rem',
+    border: 'none',
+    borderRadius: 'var(--radius)',
+    background: loading
+      ? 'var(--muted)'
+      : hover
+        ? 'var(--blue)'
+        : 'var(--bright)',
+    color: 'var(--background)',
+    fontSize: '1rem',
+    fontWeight: 700,
+    letterSpacing: '0.01em',
+    cursor: loading ? 'not-allowed' : 'pointer',
+    opacity: loading ? 0.85 : 1,
+    boxShadow: hover && !loading
+      ? '0 10px 24px rgba(23, 105, 170, 0.35)'
+      : '0 4px 12px rgba(22, 135, 232, 0.25)',
+    transform: pressed && !loading
+      ? 'scale(0.98)'
+      : hover && !loading
+        ? 'translateY(-2px)'
+        : 'none',
+    transition: 'background 0.2s, box-shadow 0.2s, transform 0.2s',
+  }}
+>
+  {loading ? (
+    <Loader2 className="animate-spin" size={18} aria-hidden="true" />
+  ) : (
+    <ArrowUpRight
+      size={18}
+      aria-hidden="true"
+      style={{
+        transition: 'transform 0.2s',
+        transform: hover ? 'translate(2px, -2px)' : 'none',
+      }}
+    />
+  )}
+  {loading ? 'Sending...' : 'Request a quote'}
+</button>
 
         <p
           id="form-status"
